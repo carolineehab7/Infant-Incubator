@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>patient Profile</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --maincolor: #5DA0D3;
+            --bgcolor: #E9F1F4;
+            --uniquecolor: #3E79FF;
+            --cardfontcolor: #E9F1F4;
+            --mainfont: "Quicksand", sans-serif;
+            --uniquefont: "Source Sans 3", sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(to right,
+                    #9FB6D2,
+                    /* Start color */
+                    /* rgba(72, 165, 232, 0.8), Middle color */
+                    #5DA0D3
+                    /* End color */
+                );
+            width: 100%;
+            display: block;
+
+        }
+
+        .box {
+            float: right;
+            font-family: var(--mainfont);
+            color: var(--maincolor);
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 1150px;
+
+        }
+
+        nav {
+            margin-top: 0;
+            padding-top: 10px;
+            padding-bottom: 50px;
+            margin-bottom: 50px;
+            width: 100%;
+            background-color: var(--bgcolor);
+            font-family: var(--mainfont);
+            position: fixed;
+            z-index: 33;
+            display: block;
+            height: 80px;
+
+
+        }
+
+        nav div {
+            float: left;
+            display: block;
+        }
+
+        nav div img {
+            width: 240px;
+            height: 70px;
+            padding-left: 60px;
+        }
+
+        nav div select {
+            margin-left: 20px;
+            width: 160px;
+            height: 50px;
+            background-color: #F4EEE5;
+            border-color: #5C707E;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--maincolor);
+        }
+
+        nav div ul {
+            margin-left: 280px;
+
+        }
+
+        nav div ul:hover {
+            color: #9FB6D2;
+        }
+
+
+        nav div ul a li {
+            float: left;
+            margin-right: 20px;
+            margin-top: -10px;
+            text-decoration: none;
+            list-style-type: none;
+            text-align: center;
+            font-weight: bold;
+            color: var(--maincolor);
+        }
+
+        nav div ul a li:hover {
+            color: var(--uniquecolor);
+        }
+
+        nav div ul a li input {
+            display: none;
+        }
+
+        nav div ul a li button {
+            display: none;
+        }
+
+        .pri {
+            background-color: var(--bgcolor);
+            border-radius: 100%;
+            margin-top: 5px;
+            width: 40px;
+            height: 40px;
+            border-color: #5C707E;
+        }
+
+        .bi-search {
+            color: var(--maincolor);
+        }
+
+        nav div button {
+            margin-left: 30px;
+            width: 120px;
+            height: 31px;
+            border-radius: 22px;
+            background-color: var(--uniquecolor);
+            color: white;
+            border: none;
+            margin-top: -2px;
+        }
+
+        nav div button:hover {
+            animation: mymove 1s infinite;
+        }
+
+        nav div form {
+            float: right;
+            padding-top: 15px;
+        }
+
+        nav div input {
+            border-radius: 30px;
+            margin-left: 15px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-right: 0;
+        }
+
+        @keyframes mymove {
+            from {
+                background-color: #9FB6D2;
+            }
+
+            to {
+                background-color: #385469;
+            }
+        }
+
+
+        nav div label #BurgerIcon,
+        #closeicon {
+
+            color: white;
+            font-size: 2.5em;
+            line-height: 80px;
+            padding-bottom: 20px;
+            float: left;
+            margin-left: 560px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #CheckedBtn {
+            display: none;
+        }
+
+        .bi-x {
+            color: #385469;
+            width: 50px;
+            height: 50px;
+        }
+
+        .pic {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            margin-top: 30px;
+            display: block;
+        }
+
+        .lab {
+            width: 140px;
+            height: 30px;
+            text-align: center;
+            margin-left: 40px;
+            margin-top: 20px;
+            border-radius: 30px;
+            color: white;
+            background-color: var(--uniquecolor);
+            font-family: var(--mainfont);
+            font-size: 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .lab:hover {
+            animation: mymove 1s infinite;
+        }
+
+        .bac {
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 30px;
+        }
+
+        .bac1 {
+            margin-top: 10px;
+            background-color: white;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .in {
+            display: none;
+        }
+
+        .pad {
+            padding-top: 50px;
+
+        }
+
+        .pad1 {
+            padding-left: 50px;
+
+
+        }
+
+        .boot {
+            position: relative;
+        }
+
+        .bo {
+            width: 450px;
+            height: 205px;
+            background-color: #A8D6E4;
+            color: white;
+            font-size: 20px;
+            border-radius: 20px;
+            padding-top: 20px;
+            margin-top: 60px;
+            margin-left: 12px;
+            padding-left: 20px;
+            margin-bottom: 30px;
+            font-family: var(--mainfont);
+        }
+
+        .bo1 {
+            width: 600px;
+            background-color: #A8D6E4;
+            color: var(--cardfontcolor);
+            padding-top: 15px;
+            border-radius: 20px;
+            padding-bottom: 10px;
+            margin-left: 20px;
+            padding-left: 20px;
+            font-family: var(--mainfont);
+            font-size: 20px;
+        }
+
+        .bo2 {
+            width: 1200px;
+            height: 130px;
+            background-color: #A8D6E4;
+            color: var(--cardfontcolor);
+            border-radius: 20px;
+            padding-top: 20px;
+            margin-top: 60px;
+            margin-left: 20px;
+            padding-left: 25px;
+            font-family: var(--mainfont);
+            font-size: 20px;
+        }
+
+        textarea {
+            border-radius: 30px;
+            width: 400px;
+            height: 300px;
+            padding: 10px;
+            color: var(--uniquecolor);
+            font-family: var(--mainfont);
+        }
+
+        .comment {
+            background-color: #9FB6D2;
+
+            font-family: var(--mainfont);
+        }
+
+        .comment button {
+            animation: mymove 1s infinite;
+            border-radius: 30px;
+            width: 80px;
+            font-family: var(--mainfont);
+        }
+
+        .hospital {
+            border-radius: 30px;
+
+
+        }
+
+        .hospital div {
+            width: 850px;
+            height: 330px;
+            border-top: 6px solid #2E90A3;
+            border-radius: 30px;
+            margin-left: -337px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            left: 340px;
+            z-index: 30;
+        }
+
+        .hospital div h3 {
+            padding-top: 50px;
+            text-align: center;
+            font-family: var(--uniquefont);
+            color: #2E90A3;
+        }
+
+        .hospital img {
+            padding: 20px;
+
+            border-radius: 30px;
+            width: 100%;
+            height: 350px;
+        }
+
+        .bord {
+            border-radius: 30px;
+        }
+
+        .circle {
+            margin-top: 20px;
+            margin-left: 20px;
+            border-radius: 50%;
+            background-color: white;
+            color: #5DA0D3;
+            width: 250px;
+            height: 250px;
+            float: right;
+        }
+
+
+
+        .car {
+            width: 350px;
+
+            background-color: #A8D6E4;
+            color: white;
+            border: none;
+
+        }
+
+        .bbb {
+            border-radius: 10px;
+        }
+
+        .car2 {
+            width: 800px;
+            background-color: #A8D6E4;
+            color: var(--cardfontcolor);
+            border: none;
+
+        }
+
+        .mar {
+            margin-bottom: 20px;
+
+        }
+
+        .space {
+            margin-left: 100px;
+
+        }
+
+        .padd {
+            padding-bottom: 20px;
+        }
+
+        .car1 {
+            width: 560px;
+            background-color: #A8D6E4;
+            color: var(--cardfontcolor);
+            border: none;
+        }
+
+        .he {
+            height: 160px;
+
+        }
+
+        .slider {
+
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: white;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--uniquecolor);
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--uniquecolor);
+            cursor: pointer;
+        }
+
+        #happyStatus {
+            position: relative;
+            top: 10px;
+            left: 43%;
+            transform: translateX(-50%);
+            font-size: 25px;
+        }
+
+        @media only screen and (max-width: 1100px) {
+
+
+            nav div ul,
+            select,
+            .bi-search,
+            button {
+                width: 300px;
+                height: 300px;
+                position: fixed;
+                padding-top: 20px;
+                z-index: 10;
+                top: 120px;
+                background-color: var(--bgcolor);
+
+                border-bottom: #5C707E;
+                right: -100%;
+                padding-bottom: 10px;
+                margin: 10px;
+                transition: all 1s ease-in-out;
+            }
+
+            nav div ul a li {
+                width: 270px;
+                height: 50px;
+                text-align: center;
+                font-family: var(--mainfont);
+                color: var(--maincolor);
+            }
+
+
+            nav div label #BurgerIcon {
+
+                color: grey;
+                font-size: 2.5em;
+                line-height: 80px;
+                padding-bottom: 20px;
+                float: right;
+                cursor: pointer;
+                display: block;
+            }
+
+
+            #CheckedBtn:checked~ul {
+                right: 0px;
+
+            }
+
+
+            #CheckedBtn:checked~label #closeicon {
+                display: block;
+                color: var(--maincolor);
+
+            }
+
+            #CheckedBtn:checked~label #BurgerIcon {
+
+                display: none;
+            }
+
+            nav button {
+                display: none;
+            }
+
+            nav input {
+                display: none;
+            }
+
+            nav div ul a li input {
+                display: block;
+            }
+
+            nav div ul a li button {
+                display: block;
+            }
+
+            .hospital div {
+                width: 520px;
+
+            }
+
+            div .comment span {
+                float: right;
+                padding-top: -10px;
+
+            }
+
+            div .comment span button {
+
+                display: block;
+                position: relative;
+                padding-top: 5px;
+                animation: mymove 1s infinite;
+                border-radius: 30px;
+                width: 80px;
+                height: 35px;
+
+                font-family: var(--mainfont);
+            }
+
+            div a button .lab {
+                display: block;
+                position: absolute;
+            }
+
+            .car2 {
+                width: 400px;
+            }
+
+            .car1 {
+                width: 400px;
+            }
+
+            .bo1 {
+                width: 430px;
+            }
+
+            span {
+                position: absolute;
+                left: 0px;
+                margin-top: -150px;
+                margin-left: -80px;
+            }
+        }
+
+        @media only screen and (max-width:480px) {
+
+            nav div ul,
+            select,
+            .bi-search,
+            button {
+                width: 300px;
+                height: 100vh;
+                position: fixed;
+                top: 180px;
+                background-color: var(--bgcolor);
+
+                border-bottom: #5C707E;
+                right: -100%;
+                padding-left: 10px;
+                margin: 10px;
+                transition: all 1s ease-in-out;
+            }
+
+            nav div ul a li {
+                width: 270px;
+                height: 50px;
+                text-align: center;
+                font-family: var(--mainfont);
+                color: var(--maincolor);
+            }
+
+            nav div label #BurgerIcon {
+
+                color: var(--maincolor);
+                font-size: 2.5em;
+                line-height: 80px;
+                padding-bottom: 20px;
+
+                float: right;
+                cursor: pointer;
+                display: block;
+            }
+
+
+            #CheckedBtn:checked~ul {
+                right: 0px;
+
+            }
+
+
+            #CheckedBtn:checked~label #closeicon {
+                display: block;
+                color: var(--maincolor);
+
+            }
+
+            #CheckedBtn:checked~label #BurgerIcon {
+
+                display: none;
+            }
+
+            nav button {
+                display: none;
+            }
+
+            nav input {
+                display: none;
+            }
+
+            nav div ul a li input {
+                display: block;
+            }
+
+            nav div ul a li button {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div>
+            <img src="{{ url_for('static', filename='logo.png')}}">
+
+        </div>
+        <div>
+            <input type="checkbox" title="Menu" id="CheckedBtn">
+
+
+            <label for="CheckedBtn">
+                <i class='bx bx-menu' id="BurgerIcon"></i>
+                <i class="bi bi-x" id="closeicon"></i>
+            </label>
+            <ul>
+
+                <a href="#">
+                    <li> profile </li>
+                </a>
+                <a href="#more">
+                    <li> more details </li>
+                </a>
+                <a href="#comment">
+                    <li> comments </li>
+                </a>
+                <a href="#">
+                    <li> <input type="text"></li>
+                </a>
+            </ul>
+        </div>
+        <div>
+
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary pri " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-search "></i>
+            </button>
+            <form action="#">
+                <input type="text">
+                <button>search</button>
+            </form>
+        </div>
+    </nav>
+
+    {% for nurse_data in nurse_data %}
+    <div class="container pad ">
+
+        <div class="row boot ">
+            <div class="col-xxl-5 pad1 bac ">
+                <img class="pic space" src="./medhat.jpg">
+                <div class="row">
+                    <div class="col-xxl-5 bo">
+                        <div class="card  " style="width: 17rem;">
+
+                            <div class="bbb">
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item car">First name: medhat</li>
+                                    <li class="list-group-item car">last name: metwally</li>
+                                    <li class="list-group-item car">mother name: effat mamdouh</li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-6">
+                <div class="circle" id="temp">
+
+                </div>
+                <div class="circle" id="humidity">
+
+                </div>
+                <div class="circle" id="pulse">
+
+                </div>
+                <div class="circle" id="angle">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <hr>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xxl-12 comment">
+
+                <form action="#">
+                    <div class="row">
+                        <div class="col-xxl-6"></div>
+                        <textarea name="comment" id="comment" placeholder="give us any comments"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <span><button type="submit" name="submit">Submit</button> </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <hr>
+
+
+        <div id=more class="col-xxl-4 bo1 ">
+            <h1>how is he today? </h1>
+            <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                <span id="happyStatus">Good</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <hr>
+    </div>
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src = "task 1/app.js"></script>
+    <!-- <script>
+
+        const slider = document.getElementById('myRange');
+        const statusSpan = document.getElementById('happyStatus');
+
+        slider.addEventListener('input', function () {
+            const value = parseInt(this.value);
+
+            if (value < 50) {
+                statusSpan.textContent = 'Bad';
+            } else {
+                statusSpan.textContent = 'Good';
+            }
+        });
+
+
+        /////////////////try 1////////////////////////
+
+
+        // const updateReadings = async () => {
+        //     try {
+        //         const response = await fetch('http://localhost:3000/api/arduino');
+        //         const data = await response.json();
+
+        //         // Update each reading individually
+        //         document.getElementById('temp').textContent = data.data[0];
+        //         document.getElementById('humidity').textContent = data.data[1];
+        //         document.getElementById('pulse').textContent = data.data[2];
+        //         document.getElementById('angle').textContent = data.data[3];
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // };
+
+        // // Update every second
+        // setInterval(updateReadings, 1000);
+        // Function to update circle display
+
+        ///////////////try 2//////////////////////
+
+
+        // function updateCircle(id, value) {
+        //     const circle = document.getElementById(id);
+        //     // Convert value to percentage for opacity
+        //     const percentage = Math.min(Math.max(value, 0), 100);
+
+        //     // Update circle opacity and add text
+        //     circle.style.opacity = percentage / 100;
+        //     circle.innerHTML = `${value.toFixed(1)}<span>${getUnit(id)}</span>`;
+        // }
+
+        // // Get unit symbol based on sensor ID
+        // function getUnit(id) {
+        //     const units = {
+        //         temp: '°C',
+        //         humidity: '%',
+        //         pulse: 'bpm',
+        //         angle: '°'
+        //     };
+        //     return units[id] || '';
+        // }
+
+        // // Function to fetch and update sensor data
+        // async function updateSensorData() {
+        //     try {
+        //         const response = await fetch('/api/arduino');
+        //         const data = await response.json();
+
+        //         // Update all circles with new values
+        //         updateCircle('temp', data.temperature);
+        //         updateCircle('humidity', data.humidity);
+        //         updateCircle('pulse', data.pulse);
+        //         updateCircle('angle', data.angle);
+        //     } catch (error) {
+        //         console.error('Error fetching sensor data:', error);
+        //     }
+        // }
+
+        // // Start periodic updates
+        // setInterval(updateSensorData, 250); // Match polling cycle from diagram
+
+        // // Initial update when page loads
+        // updateSensorData();
+
+        /////////////////try 3////////////////////////
+
+        var socket = io();
+
+        socket.on('data', function (data) {
+            console.log('Received data:', data);
+
+            // Update each value's opacity
+            document.getElementById('temp').style.opacity = data.value1 + "%";
+            document.getElementById('humidity').style.opacity = data.value2 + "%";
+            document.getElementById('pulse').style.opacity = data.value3 + "%";
+            document.getElementById('angle').style.opacity = data.value4 + "%";
+        });
+
+    </script> -->
+    <script>
+        const socket = io();
+    
+        socket.on('sensorData', (data) => {
+        console.log('Sensor Data:', data);
+        
+        // Update temperature (convert to 0-1 range)
+        document.getElementById('temp').style.opacity = data.temp / 100;
+        document.getElementById('temp').textContent = `${data.temp}°C`;
+        
+        // Update humidity
+        document.getElementById('humidity').style.opacity = data.humidity / 100;
+        document.getElementById('humidity').textContent = `${data.humidity}%`;
+        
+        // Update pulse
+        document.getElementById('pulse').style.opacity = Math.min(data.pulse / 120, 1); // Assuming max 120 BPM
+        document.getElementById('pulse').textContent = `${data.pulse} BPM`;
+        
+        // Update angle
+        document.getElementById('angle').style.opacity = Math.min(data.angle / 180, 1); // Assuming max 180 degrees
+        document.getElementById('angle').textContent = `${data.angle}°`;
+        });
+    </script>
+
+</body>
+
+</html>
