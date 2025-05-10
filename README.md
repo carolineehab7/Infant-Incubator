@@ -16,6 +16,7 @@ A software using React and Python is used to show the temperature, humidity, and
 
 ## Technologies used
 - Python
+- HTML
 - React
 
 ## Team Members
